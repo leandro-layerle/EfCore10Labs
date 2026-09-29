@@ -1,0 +1,50 @@
+@host = https://localhost:7296
+
+###############################################################################
+# PARTE 06 - LEFTJOIN / RIGHTJOIN
+#
+# El reset restaura SIEMPRE:
+# Customers: 1 Ana, 2 Bruno, 3 Carla
+# Orders:
+#   1 -> Customer 1 / 120
+#   2 -> Customer 1 / 85
+#   3 -> Customer 2 / 200
+#   4 -> Customer 99 / 50 (sin cliente coincidente)
+###############################################################################
+
+### 1. Crear datos iniciales
+POST {{host}}/api/joins/seed
+
+### 2. Inspeccionar datos
+GET {{host}}/api/joins/data
+
+### 3. LEFT JOIN anterior: GroupJoin + SelectMany + DefaultIfEmpty
+GET {{host}}/api/joins/left/legacy
+
+### 4. LEFT JOIN nuevo: .NET 10 LeftJoin + traducción EF Core 10
+GET {{host}}/api/joins/left
+
+### 5. RIGHT JOIN nuevo
+GET {{host}}/api/joins/right
+
+###############################################################################
+# REPRODUCIBILIDAD
+###############################################################################
+
+### 6. Reset completo, incluyendo IDENTITY
+POST {{host}}/api/joins/reset
+
+### 7. Confirmar IDs y datos iniciales
+GET {{host}}/api/joins/data
+
+### 8. LEFT JOIN sigue funcionando después del reset
+GET {{host}}/api/joins/left
+
+### 9. RIGHT JOIN sigue funcionando después del reset
+GET {{host}}/api/joins/right
+
+### 10. Segundo reset: debe producir exactamente el mismo estado
+POST {{host}}/api/joins/reset
+
+### 11. Confirmación final
+GET {{host}}/api/joins/data
