@@ -1,0 +1,51 @@
+@JsonColumns_Api_HostAddress = https://localhost:7160
+
+
+### ============================================================
+### CUSTOMERS
+### ============================================================
+
+### Seed
+
+POST {{JsonColumns_Api_HostAddress}}/api/customers/seed
+Accept: application/json
+
+
+### Obtener customers
+
+GET {{JsonColumns_Api_HostAddress}}/api/customers
+Accept: application/json
+
+
+### Consultar una propiedad dentro de la columna JSON
+
+GET {{JsonColumns_Api_HostAddress}}/api/customers/shipping-city/Buenos%20Aires
+Accept: application/json
+
+
+### Consultar una columna JSON opcional nula
+
+GET {{JsonColumns_Api_HostAddress}}/api/customers/without-billing-address
+Accept: application/json
+
+
+### Proyectar una propiedad interna del JSON
+
+GET {{JsonColumns_Api_HostAddress}}/api/customers/shipping-cities
+Accept: application/json
+
+
+### ============================================================
+### COMPLEX COLLECTION
+### ============================================================
+
+### Seed distributor con colección compleja
+
+POST {{JsonColumns_Api_HostAddress}}/api/distributors/seed
+Accept: application/json
+
+
+### Leer colección compleja almacenada como JSON
+
+GET {{JsonColumns_Api_HostAddress}}/api/distributors
+Accept: application/json
