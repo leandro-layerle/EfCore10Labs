@@ -1,0 +1,65 @@
+@ComplexTypes_Api_HostAddress = https://localhost:7098
+
+
+### ============================================================
+### SEED
+### ============================================================
+
+POST {{ComplexTypes_Api_HostAddress}}/api/customers/seed
+Accept: application/json
+
+
+### ============================================================
+### COMPLEX TYPES
+### ============================================================
+
+### Obtener todos los customers
+
+GET {{ComplexTypes_Api_HostAddress}}/api/customers
+Accept: application/json
+
+
+### Buscar por propiedad interna del Complex Type
+
+GET {{ComplexTypes_Api_HostAddress}}/api/customers/shipping-city/Buenos%20Aires
+Accept: application/json
+
+
+### Buscar customers sin BillingAddress
+
+GET {{ComplexTypes_Api_HostAddress}}/api/customers/without-billing-address
+Accept: application/json
+
+
+### Utilizar la misma instancia como ShippingAddress y BillingAddress
+
+POST {{ComplexTypes_Api_HostAddress}}/api/customers/shared-address-complex
+Accept: application/json
+
+
+### Comparar Complex Types por contenido
+
+GET {{ComplexTypes_Api_HostAddress}}/api/customers/same-shipping-and-billing-address
+Accept: application/json
+
+
+### ============================================================
+### OWNED TYPES - COMPARACIÓN
+### ============================================================
+
+### Intentar reutilizar la misma instancia como Owned Type
+
+POST {{ComplexTypes_Api_HostAddress}}/api/ownedcustomers/shared-address-owned
+Accept: application/json
+
+
+### Crear dos OwnedAddress distintos con los mismos valores
+
+POST {{ComplexTypes_Api_HostAddress}}/api/ownedcustomers/same-value-addresses
+Accept: application/json
+
+
+### Comparar Owned Types
+
+GET {{ComplexTypes_Api_HostAddress}}/api/ownedcustomers/same-shipping-and-billing-address
+Accept: application/json
