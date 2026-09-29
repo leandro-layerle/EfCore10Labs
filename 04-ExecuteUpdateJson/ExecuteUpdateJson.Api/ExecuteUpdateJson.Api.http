@@ -1,0 +1,68 @@
+@ExecuteUpdateJson_Api_HostAddress = https://localhost:7274
+
+
+### ============================================================
+### SETUP
+### ============================================================
+
+### Crear datos iniciales
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/seed
+Accept: application/json
+
+
+### Reiniciar datos para repetir las pruebas
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/reset
+Accept: application/json
+
+
+### Ver estado actual
+
+GET {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs
+Accept: application/json
+
+
+### ============================================================
+### SAVECHANGES - COMPARACIÓN
+### ============================================================
+
+### Carga y trackea los blogs .NET antes de actualizar Views
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/savechanges/increment-views?category=.NET
+Accept: application/json
+
+
+### ============================================================
+### EXECUTEUPDATE + JSON
+### ============================================================
+
+### Actualizar una propiedad JSON a un valor constante
+### Esta es la prueba base y la más compatible entre versiones de SQL Server.
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/executeupdate/set-views?category=.NET&views=100
+Accept: application/json
+
+
+### Incrementar usando el valor actual dentro del JSON
+### SQL Server 2022+ es el escenario recomendado para esta variante.
+### SQL Server 2025 con json nativo genera SQL usando modify().
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/executeupdate/increment-views?category=.NET
+Accept: application/json
+
+
+### Actualizar dos propiedades internas del mismo JSON
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/executeupdate/feature-category?category=.NET
+Accept: application/json
+
+
+### ============================================================
+### CHANGE TRACKER
+### ============================================================
+
+### Demostrar que ExecuteUpdate no sincroniza una instancia ya trackeada
+
+POST {{ExecuteUpdateJson_Api_HostAddress}}/api/blogs/change-tracker-demo/1
+Accept: application/json
