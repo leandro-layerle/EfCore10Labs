@@ -1,0 +1,39 @@
+@host = https://localhost:7297
+
+###############################################################################
+# PARTE 07 - VECTOR SEARCH
+#
+# Vectores deliberadamente pequeños (3 dimensiones) para aislar la feature.
+# No representan embeddings reales de un modelo de IA.
+###############################################################################
+
+### 1. Crear datos iniciales
+POST {{host}}/api/documents/seed
+
+### 2. Inspeccionar documentos
+GET {{host}}/api/documents
+
+### 3. Buscar documentos cercanos al eje "tecnología"
+GET {{host}}/api/documents/search?x=1&y=0&z=0&take=3
+
+### 4. Cambiar el vector: acercarnos al eje "cocina"
+GET {{host}}/api/documents/search?x=0&y=1&z=0&take=3
+
+### 5. Cambiar el vector: acercarnos al eje "viajes"
+GET {{host}}/api/documents/search?x=0&y=0&z=1&take=3
+
+### 6. Validación de take
+GET {{host}}/api/documents/search?x=1&y=0&z=0&take=10
+
+###############################################################################
+# REPRODUCIBILIDAD
+###############################################################################
+
+### 7. Reset completo, incluyendo IDENTITY
+POST {{host}}/api/documents/reset
+
+### 8. Confirmar que los IDs vuelven a 1..5
+GET {{host}}/api/documents
+
+### 9. Repetir búsqueda inicial después del reset
+GET {{host}}/api/documents/search?x=1&y=0&z=0&take=3
