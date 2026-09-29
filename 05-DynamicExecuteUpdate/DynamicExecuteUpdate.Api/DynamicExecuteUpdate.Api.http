@@ -1,0 +1,61 @@
+@host = https://localhost:7285
+
+### 1. Crear datos de prueba
+POST {{host}}/api/products/seed
+
+### 2. Ver estado inicial
+GET {{host}}/api/products
+
+### 3. Baseline: update de forma fija
+PATCH {{host}}/api/products/1/fixed
+Content-Type: application/json
+
+{
+  "price": 135
+}
+
+### 4. Reiniciar datos
+POST {{host}}/api/products/reset
+
+### 5. Dynamic ExecuteUpdate: solo Price
+PATCH {{host}}/api/products/1/dynamic
+Content-Type: application/json
+
+{
+  "price": 140
+}
+
+### 6. Verificar resultado
+GET {{host}}/api/products
+
+### 7. Reiniciar datos
+POST {{host}}/api/products/reset
+
+### 8. Dynamic ExecuteUpdate: Name + Stock
+PATCH {{host}}/api/products/1/dynamic
+Content-Type: application/json
+
+{
+  "name": "Mechanical Keyboard Pro",
+  "stock": 25
+}
+
+### 9. Verificar resultado
+GET {{host}}/api/products
+
+### 10. Reiniciar datos
+POST {{host}}/api/products/reset
+
+### 11. Dynamic ExecuteUpdate: solo IsActive
+PATCH {{host}}/api/products/2/dynamic
+Content-Type: application/json
+
+{
+  "isActive": false
+}
+
+### 12. Caso borde: request sin cambios
+PATCH {{host}}/api/products/1/dynamic
+Content-Type: application/json
+
+{}
