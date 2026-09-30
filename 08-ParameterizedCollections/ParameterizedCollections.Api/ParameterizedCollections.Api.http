@@ -1,0 +1,55 @@
+@host = https://localhost:7298
+
+###############################################################################
+# PARTE 08 - PARAMETERIZED COLLECTIONS
+###############################################################################
+
+### 1. Seed
+POST {{host}}/api/products/seed
+
+### 2. Datos base
+GET {{host}}/api/products
+
+###############################################################################
+# MISMA COLECCION: 1, 2, 3
+###############################################################################
+
+### 3. EF Core 10 default -> MultipleParameters
+GET {{host}}/api/products/default?ids=1&ids=2&ids=3
+
+### 4. Forzar constantes -> IN (1, 2, 3)
+GET {{host}}/api/products/constant?ids=1&ids=2&ids=3
+
+### 5. Forzar un único parámetro -> JSON + OPENJSON en SQL Server
+GET {{host}}/api/products/parameter?ids=1&ids=2&ids=3
+
+### 6. Forzar múltiples parámetros explícitamente
+GET {{host}}/api/products/multiple-parameters?ids=1&ids=2&ids=3
+
+###############################################################################
+# PADDING: 8 VALORES
+###############################################################################
+
+### 7. Default con 8 IDs
+# Observar el SQL real: EF10 documenta padding hasta 10 parámetros.
+GET {{host}}/api/products/default?ids=1&ids=2&ids=3&ids=4&ids=5&ids=6&ids=7&ids=8
+
+###############################################################################
+# CAMBIAR VALORES SIN CAMBIAR CARDINALIDAD
+###############################################################################
+
+### 8. Otros 3 IDs
+GET {{host}}/api/products/default?ids=4&ids=5&ids=6
+
+###############################################################################
+# REPRODUCIBILIDAD
+###############################################################################
+
+### 9. Reset
+POST {{host}}/api/products/reset
+
+### 10. Confirmar IDs
+GET {{host}}/api/products
+
+### 11. Repetir consulta principal
+GET {{host}}/api/products/default?ids=1&ids=2&ids=3
