@@ -1,0 +1,51 @@
+@host = https://localhost:7299
+
+###############################################################################
+# PARTE 09 - SECURITY IMPROVEMENTS
+###############################################################################
+
+### 1. Seed
+POST {{host}}/api/users/seed
+
+### 2. Datos base
+GET {{host}}/api/users
+
+###############################################################################
+# EXPERIMENTO 1 - REDACCION DE CONSTANTES INLINE
+###############################################################################
+
+### 3. EF.Constant fuerza valores inline en el SQL ejecutado.
+# En EF Core 10, el LOG debe redactarlos como ? por defecto.
+GET {{host}}/api/users/roles-inline?roles=Administrator&roles=Manager
+
+### 4. Repetir luego de habilitar EnableSensitiveDataLogging() en Program.cs.
+# SOLO PARA EL EXPERIMENTO. El log debería volver a mostrar los valores.
+GET {{host}}/api/users/roles-inline?roles=Administrator&roles=Manager
+
+###############################################################################
+# EXPERIMENTO 2 - RAW SQL
+###############################################################################
+
+### 5. FromSql + FormattableString: el valor se parametriza.
+GET {{host}}/api/users/safe-email?email=ana%40demo.local
+
+### 6. Endpoint deliberadamente problemático.
+# El objetivo principal es observar el WARNING del analyzer al compilar.
+GET {{host}}/api/users/raw-warning?fieldName=Email
+
+### 7. SQL dinámico legítimo: identificador validado por whitelist
+# y valor enviado como SqlParameter.
+GET {{host}}/api/users/raw-validated?fieldName=Role&value=Manager
+
+### 8. Campo no permitido -> 400
+GET {{host}}/api/users/raw-validated?fieldName=Password&value=test
+
+###############################################################################
+# REPRODUCIBILIDAD
+###############################################################################
+
+### 9. Reset
+POST {{host}}/api/users/reset
+
+### 10. Confirmar IDs
+GET {{host}}/api/users
