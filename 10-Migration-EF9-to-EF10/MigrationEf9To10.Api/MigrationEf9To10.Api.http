@@ -1,0 +1,15 @@
+@host = https://localhost:7300
+### Seed
+POST {{host}}/api/products/seed
+### Base
+GET {{host}}/api/products
+### Contains: capturar SQL
+GET {{host}}/api/products/by-ids?ids=1&ids=2&ids=3
+### Misma cardinalidad, otros valores
+GET {{host}}/api/products/by-ids?ids=4&ids=5&ids=6
+### Nombre de parámetro
+GET {{host}}/api/products/by-category?category=Periféricos
+### Reset reproducible
+POST {{host}}/api/products/reset
+### Confirmar IDs
+GET {{host}}/api/products
